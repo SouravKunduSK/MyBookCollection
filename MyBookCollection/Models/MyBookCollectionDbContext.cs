@@ -26,6 +26,7 @@ namespace MyBookCollection.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             // Define relationships and constraints
 
             // SubCategory - Category (Many-to-One)
