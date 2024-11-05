@@ -30,7 +30,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-    options.LoginPath = "Authentication/Login";
+    options.LoginPath = "/Authentication/Login";
     options.SlidingExpiration = true;
 });
 
@@ -56,5 +56,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+//Seed the database
+DbInitializer.SeedDefaultUsersAndRolesAsync(app).Wait();
 
 app.Run();
