@@ -15,6 +15,8 @@
         public string SubCategoryName { get; set; }
 
         // Navigation Property
+
+        public AppUser? User { get; set; }
         public virtual Book Book { get; set; }
     }
 }

@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MyBookCollection.Models.Data;
 
 namespace MyBookCollection.Models
 {
-    public class MyBookCollectionDbContext : DbContext
+    public class MyBookCollectionDbContext : IdentityDbContext<AppUser>
     {
         public MyBookCollectionDbContext(DbContextOptions<MyBookCollectionDbContext> options) : base(options)
         {

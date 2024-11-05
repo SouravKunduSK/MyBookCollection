@@ -1,6 +1,8 @@
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyBookCollection.Models;
+using MyBookCollection.Models.Data;
 
 
 
@@ -15,6 +17,24 @@ builder.Services.AddDbContext<MyBookCollectionDbContext>(options=>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+//Configure Authentication
+
+// 1. Adding Identity Service
+builder.Services.AddIdentity<AppUser, IdentityRole>()
+    .AddEntityFrameworkStores<MyBookCollectionDbContext>()
+    .AddDefaultTokenProviders();
+
+// 2. Configure cookie
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+    options.LoginPath = "Authentication/Login";
+    options.SlidingExpiration = true;
+});
+
+
 
 var app = builder.Build();
 

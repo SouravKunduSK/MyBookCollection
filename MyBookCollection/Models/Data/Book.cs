@@ -16,6 +16,7 @@
         public int ReadingStatusId { get; set; }
         public int BookStatusId { get; set; }
 
+        public AppUser? User { get; set; }
         public virtual Author Author { get; set; }
         public virtual Translator Translator { get; set; }
         public virtual Category Category { get; set; }
