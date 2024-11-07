@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MyBookCollection.Helpers.Roles;
 using MyBookCollection.Models.Data;
 using MyBookCollection.Models.ViewModels;
 using MyBookCollection.Services;
@@ -70,6 +71,57 @@ namespace MyBookCollection.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Authentication");
         }
+
+        //Register New Users
+        public async Task<IActionResult> Register()
+        {
+            ViewBag.Message = "Password must contain at least one digit, one uppercase and one lowercase letter.";
+            return View(new RegisterVM());
+        }
+
+        public async Task<IActionResult> UserRegistration(RegisterVM registerVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Message = "Password must contain at least one digit, one uppercase and one lowercase letter.";
+                return View("Register", registerVM);
+            }
+            else
+            {
+                var emailExists = await _userManager.FindByEmailAsync(registerVM.EmailAddress);
+                if (emailExists != null)
+                {
+                    ViewBag.Message = "<strong>Warning!</strong> <br/> This email has already been used! Try another.";
+                    return View("Register", registerVM);
+                }
+                else
+                {
+                    var newUser = new AppUser()
+                    {
+                        FullName = registerVM.FirstName + " " + registerVM.LastName,
+                        UserName = registerVM.FirstName + "_" + registerVM.LastName,
+                        Email = registerVM.EmailAddress
+                    };
+
+                    var userCreated = await _userManager.CreateAsync(newUser, registerVM.Password);
+                    if(userCreated.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(newUser, Role.User);
+
+                        //Automatically login after registration
+                        await _signInManager.PasswordSignInAsync(newUser, registerVM.Password, false, false);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ViewBag.Message = "<strong>Warning!</strong> <br/> Something went wrong! Try again.";
+                        return View("Register", registerVM);
+                    }
+
+                }
+            }
+        }
+
         public IActionResult Index()
         {
             return View();
