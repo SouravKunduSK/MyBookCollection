@@ -31,7 +31,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+    options.ExpireTimeSpan = TimeSpan.FromDays(15);
     options.LoginPath = "/Authentication/Login";
     options.LogoutPath = "/Authentication/Logout";
     options.SlidingExpiration = true;
