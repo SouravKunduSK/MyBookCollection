@@ -1,9 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyBookCollection.Helpers.Roles;
 using MyBookCollection.Models.Data;
 using MyBookCollection.Models.ViewModels;
 using MyBookCollection.Services;
+using System.Net;
+using System.Net.Mail;
+using System.Security.Claims;
+using NuGet.Configuration;
 
 namespace MyBookCollection.Controllers
 {
@@ -12,12 +18,14 @@ namespace MyBookCollection.Controllers
         //private IUserService _userService;
         private SignInManager<AppUser> _signInManager;
         private UserManager<AppUser> _userManager;
+        private IConfiguration _configuration;
 
-        public AuthenticationController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+        public AuthenticationController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IConfiguration configuration)
         {
             //_userService = userService;
             _signInManager = signInManager;
             _userManager = userManager;
+            _configuration = configuration;
         }
 
         //Login users
@@ -43,7 +51,20 @@ namespace MyBookCollection.Controllers
                         var userLoggedIn = await _signInManager.PasswordSignInAsync(user, loginVM.Password, loginVM.RememberMe, false);
                         if (userLoggedIn.Succeeded)
                         {
+                            //Showing Full Name
+                            var claims = new List<Claim>
+                            {
+                                new Claim(ClaimTypes.Name, user.UserName),
+                                new Claim("FullName", user.FullName) // Add full name as a custom claim
+                            };
+
+                            var claimsIdentity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
+                            await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(claimsIdentity));
                             return RedirectToAction("Index", "Home");
+                        }
+                        else if(userLoggedIn.IsNotAllowed)
+                        {
+                            return RedirectToAction("EmailConfirmation");
                         }
                         else
                         {
@@ -90,7 +111,7 @@ namespace MyBookCollection.Controllers
         //Register New Users
         public async Task<IActionResult> Register()
         {
-            ViewBag.Message = "Password must contain at least one digit, one uppercase and one lowercase letter.";
+            ViewBag.Message = "Password must contain at least one digit, one special character, one uppercase and one lowercase letter.";
             return View(new RegisterVM());
         }
 
@@ -98,7 +119,7 @@ namespace MyBookCollection.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Message = "Password must contain at least one digit, one uppercase and one lowercase letter.";
+                ViewBag.Message = "Password must contain at least one digit, one special character, one uppercase and one lowercase letter.";
                 return View("Register", registerVM);
             }
             else
@@ -114,8 +135,8 @@ namespace MyBookCollection.Controllers
                     var newUser = new AppUser()
                     {
                         FullName = registerVM.FirstName + " " + registerVM.LastName,
-                        UserName = registerVM.FirstName + "_" + registerVM.LastName,
                         Email = registerVM.EmailAddress,
+                        UserName = registerVM.EmailAddress,
                         LockoutEnabled = true
                     };
 
@@ -123,10 +144,26 @@ namespace MyBookCollection.Controllers
                     if (userCreated.Succeeded)
                     {
                         await _userManager.AddToRoleAsync(newUser, Role.User);
+                        if(await _userManager.IsEmailConfirmedAsync(newUser))
+                        {
+                            //Automatically login after registration
+                            await _signInManager.PasswordSignInAsync(newUser, registerVM.Password, false, false);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            //Generate token
+                            var activationToken = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                            //Generate Email Confirmation Link
+                            var confirmationLink = Url.Action("ConfirmEmail", "Authentication",new {userId = newUser.Id, token =activationToken},Request.Scheme);
 
-                        //Automatically login after registration
-                        await _signInManager.PasswordSignInAsync(newUser, registerVM.Password, false, false);
-                        return RedirectToAction("Index", "Home");
+                            //Send Email to User
+                            await SendVerificationLinkEmail(newUser.Email, confirmationLink);
+                            ViewBag.VerificationMessage = "<strong>Registration is successfully done!</strong> <br/> Account activation link " +
+                                "has been sent to your Email Address: " + newUser.Email;
+                            return View("Register", registerVM);
+                        }
+                        
                     }
                     else
                     {
@@ -144,6 +181,7 @@ namespace MyBookCollection.Controllers
         }
 
         //Get Remaining Locked Out time
+        [NonAction]
         private string GetRemainingTimes(AppUser user)
         {
             var lockedOutEnd = user.LockoutEnd?.UtcDateTime;
@@ -166,6 +204,7 @@ namespace MyBookCollection.Controllers
         }
 
         //Get remaining attempts
+        [NonAction]
         private string GetRemainingAttempts(AppUser user)
         {
             var maxAttempts = _userManager.Options.Lockout.MaxFailedAccessAttempts;
@@ -181,7 +220,48 @@ namespace MyBookCollection.Controllers
             }
         }
 
+        //Sending verification email
+        [NonAction]
+        private async Task SendVerificationLinkEmail(string emailAddress, string confirmationLink)
+        {
+            var fromEmail = new MailAddress("sssk08844@gmail.com", "My Book Collection");
+            var toEmail = new MailAddress(emailAddress);
+            var fromEmailPassword = "ddvo rsdv klgu jliy";
+            string subject = "Verify Email Address";
+            string body = $"<h4 class='text-center'><b>My Book Collection</b></h4><br/><br/>" +
+                          $"<strong>Hello! Your account has been created successfully.</strong><br/>" +
+                          $"Please confirm your email by clicking the button below:<br/><br/>" +
+                          $"<a href='{confirmationLink}' style='text-decoration: none;'>" +
+                          $"<button style='background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;'>Confirm Email</button>" +
+                          $"</a><br/><br/>" +
+                          $"Regards,<br/>My Book Collection<br/>" +
+                          $"<hr/>" +
+                          $"<small>If you’re having trouble clicking the \"Confirm Email\" button, copy and paste the URL below into your web browser: <br/>{confirmationLink}</small><br/><br/>" +
+                          $"<small class='text-center'>&copy; {DateTime.Now.Year} My Book Collection, All Rights Reserved</small><br/><br/>";
 
+            var smtpClient = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromEmail.Address, fromEmailPassword)
+            };
+
+            using (var message = new MailMessage(fromEmail, toEmail)
+            {
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            })
+            {
+                await smtpClient.SendMailAsync(message);
+            }
+
+        }
+
+        
 
     }
 }
