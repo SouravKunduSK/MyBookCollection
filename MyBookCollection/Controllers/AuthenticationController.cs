@@ -64,7 +64,9 @@ namespace MyBookCollection.Controllers
                         }
                         else if(userLoggedIn.IsNotAllowed)
                         {
-                            return RedirectToAction("EmailConfirmation");
+                            ViewBag.Message = "<strong>Email is not verified!</strong> <br/> Email verification link " +
+                                "has been sent to your Email Address: " + user.Email;
+                            return View("Login", new LoginVM());
                         }
                         else
                         {
@@ -172,6 +174,34 @@ namespace MyBookCollection.Controllers
                     }
 
                 }
+            }
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            bool status = false;
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.Message = "<strong>Warning!</strong> <br/> Something went wrong! Try again.";
+                return View("Login");
+            }
+            else
+            {
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded)
+                {
+                    status = true;
+                    ViewBag.Status = status;
+                    ViewBag.SuccessMessage = "<strong>Thank you!</strong> <br/> Your email has been confirmed. You can now log in!<br/>";
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Message = "<strong>Warning!</strong> <br/> Something went wrong! Try again.<br/>";
+                    return View();
+                }
+                
             }
         }
 
