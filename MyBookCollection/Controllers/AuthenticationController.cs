@@ -10,22 +10,33 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using NuGet.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyBookCollection.Controllers
 {
     public class AuthenticationController : Controller
     {
-        //private IUserService _userService;
+        private IUserService _userService;
         private SignInManager<AppUser> _signInManager;
         private UserManager<AppUser> _userManager;
         private IConfiguration _configuration;
 
-        public AuthenticationController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IConfiguration configuration)
+        public AuthenticationController(IUserService userService, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IConfiguration configuration)
         {
-            //_userService = userService;
+            _userService = userService;
             _signInManager = signInManager;
             _userManager = userManager;
             _configuration = configuration;
+        }
+        [Authorize]
+        public async Task<IActionResult> Users()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Authentication");
+            }
+            return View(user);
         }
 
         //Login users
@@ -51,15 +62,8 @@ namespace MyBookCollection.Controllers
                         var userLoggedIn = await _signInManager.PasswordSignInAsync(user, loginVM.Password, loginVM.RememberMe, false);
                         if (userLoggedIn.Succeeded)
                         {
-                            //Showing Full Name
-                            var claims = new List<Claim>
-                            {
-                                new Claim(ClaimTypes.Name, user.UserName),
-                                new Claim("FullName", user.FullName) // Add full name as a custom claim
-                            };
-
-                            var claimsIdentity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
-                            await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(claimsIdentity));
+                            // Set full name in session
+                            HttpContext.Session.SetString("FullName", user.FullName);
                             return RedirectToAction("Index", "Home");
                         }
                         else if(userLoggedIn.IsNotAllowed)
@@ -205,10 +209,7 @@ namespace MyBookCollection.Controllers
             }
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+     
 
         //Get Remaining Locked Out time
         [NonAction]
