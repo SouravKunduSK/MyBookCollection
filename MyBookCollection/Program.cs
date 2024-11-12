@@ -60,6 +60,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 //Add Services
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
 
 
 
