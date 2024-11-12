@@ -5,5 +5,6 @@ namespace MyBookCollection.Services
     public interface IUserService
     {
         Task<List<AppUser>> GetUsersAsync();
+        Task<string> GetUsernameAsync(string userId);
     }
 }

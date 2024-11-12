@@ -62,8 +62,6 @@ namespace MyBookCollection.Controllers
                         var userLoggedIn = await _signInManager.PasswordSignInAsync(user, loginVM.Password, loginVM.RememberMe, false);
                         if (userLoggedIn.Succeeded)
                         {
-                            // Set full name in session
-                            HttpContext.Session.SetString("FullName", user.FullName);
                             return RedirectToAction("Index", "Home");
                         }
                         else if(userLoggedIn.IsNotAllowed)
