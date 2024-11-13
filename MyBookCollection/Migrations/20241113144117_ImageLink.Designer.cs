@@ -12,8 +12,8 @@ using MyBookCollection.Models;
 namespace MyBookCollection.Migrations
 {
     [DbContext(typeof(MyBookCollectionDbContext))]
-    [Migration("20241108182446_RemoveUserDisplayName")]
-    partial class RemoveUserDisplayName
+    [Migration("20241113144117_ImageLink")]
+    partial class ImageLink
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -170,10 +170,6 @@ namespace MyBookCollection.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -183,6 +179,9 @@ namespace MyBookCollection.Migrations
 
                     b.Property<string>("FullName")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageLink")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")

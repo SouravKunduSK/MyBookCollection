@@ -237,9 +237,9 @@
 
 
                                         @{
-                                            //var imageLink = await UserService.;
+                                            var imageLink = await UserService.GetUserImageLinkAsync(userId);
                                             <img class="img-profile rounded-circle"
-                                                 src="@Url.Content("")">
+                                                 src="@Url.Content(imageLink)">
 
                                         }
 

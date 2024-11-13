@@ -24,10 +24,10 @@ namespace MyBookCollection.Services
             return user?.FullName;
         }
 
-        /*public async Task<string> GetUserImageLinkAsync(string userId)
+        public async Task<string> GetUserImageLinkAsync(string userId)
         {
             var user = await _context.Users.FindAsync(userId);
-            return user?.PhotoLink;
-        }*/
+            return user?.ImageLink;
+        }
     }
 }
