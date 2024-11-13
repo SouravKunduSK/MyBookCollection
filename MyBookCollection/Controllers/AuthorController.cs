@@ -42,7 +42,7 @@ namespace MyBookCollection.Controllers
                 ViewBag.Message = "Author name is added successfully!";
                 return RedirectToAction(nameof(AuthorList));
             }
-            return View(author);
+            return View("AuthorList");
         }
 
 
