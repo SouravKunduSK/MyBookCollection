@@ -23,5 +23,11 @@ namespace MyBookCollection.Services
             var user = await _context.Users.FindAsync(userId);
             return user?.FullName;
         }
+
+        /*public async Task<string> GetUserImageLinkAsync(string userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            return user?.PhotoLink;
+        }*/
     }
 }

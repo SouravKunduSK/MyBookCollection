@@ -1,6 +1,8 @@
 ﻿@using MyBookCollection.Models.Data
 @model AppUser
-
+@{
+    ViewBag.Title = "User List";
+}
 @if (User.Identity.IsAuthenticated)
 {
     <div class="container-fluid">
