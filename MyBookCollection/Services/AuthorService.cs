@@ -26,9 +26,9 @@ namespace MyBookCollection.Services
 
         }
 
-        public async Task UpdateAuthorAsync(Author author, string userId)
+        public async Task UpdateAuthorAsync(Author author)
         {
-            var existingAuthor = await _context.Authors.FirstOrDefaultAsync(a => a.Id == author.Id && a.UserId == userId);
+            var existingAuthor = await _context.Authors.FindAsync(author.Id);
             if (existingAuthor == null)
             {
                 throw new InvalidOperationException("This author name is not available! Try another.");
@@ -37,9 +37,9 @@ namespace MyBookCollection.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAuthorAsync(int id, string userId)
+        public async Task DeleteAuthorAsync(int id)
         {
-            var author = await _context.Authors.FirstOrDefaultAsync(a => a.Id == id && a.UserId == userId);
+            var author = await _context.Authors.FindAsync(id);
             if (author == null)
             {
                 throw new InvalidOperationException("This author name is not available! Try another.");
@@ -56,10 +56,10 @@ namespace MyBookCollection.Services
             return authors;
         }
 
-        public async Task<Author> GetAuthorByIdAsync(int id, string userId)
+        public async Task<Author> GetAuthorByIdAsync(int id)
         {
             var author = await _context.Authors
-               .FirstOrDefaultAsync(a=>a.UserId == userId && a.Id == id);
+               .FindAsync(id);
             return author;
         }
     }
