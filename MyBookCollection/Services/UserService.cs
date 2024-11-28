@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MyBookCollection.Models;
 using MyBookCollection.Models.Data;
 
@@ -16,6 +17,11 @@ namespace MyBookCollection.Services
         {
             var users = await _context.Users.ToListAsync();
             return users;
+        }
+        public async Task<string> GetUsernameAsync(string userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            return user?.FullName;
         }
     }
 }

@@ -1,5 +1,10 @@
-﻿@using MyBookCollection.Helpers.Roles
+﻿@using Microsoft.AspNetCore.Identity
+@using MyBookCollection.Helpers.Roles
 @using Microsoft.AspNetCore.Http
+@using System.Security.Claims
+@using MyBookCollection.Models.Data
+@using MyBookCollection.Services
+@inject IUserService UserService
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,7 +63,10 @@
 
                     <button type="button" class="btn btn-outline-danger my-2 my-sm-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                         <i class="bi bi-box-arrow-in-right"></i> Log out <b>@{
-                                var userName = Context.Session.GetString("FullName")?.ToString();
+                                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                                var userName = await UserService.GetUsernameAsync(userId);
+                                
+                                //var userName = Context.Session.GetString("FullName")?.ToString();
                             }
                             -> @userName
                             </b>
