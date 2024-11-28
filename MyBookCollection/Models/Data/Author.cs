@@ -1,4 +1,6 @@
-﻿namespace MyBookCollection.Models.Data
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+namespace MyBookCollection.Models.Data
 {
     public class Author
     {
@@ -7,6 +9,6 @@
         public string? UserId { get; set; }
 
         public AppUser? User { get; set; }
-        public virtual ICollection<Book> Books { get; set; }
+        public virtual ICollection<Book> Books { get; set; } = new List<Book>();
     }
 }

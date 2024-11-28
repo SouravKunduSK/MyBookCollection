@@ -7,19 +7,17 @@
 }
 
 
-<div class="container">
-
     <!-- Outer Row -->
     <div class="row justify-content-center">
 
-        <div class="col-xl-10 col-lg-12 col-md-9">
+    <div class="col-xl-10 col-lg-12 col-md-9">
 
-            <div class="card o-hidden border-0 shadow-lg my-5">
-                <div class="card-body p-0">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
-                    <div class="row">
-                        <div class="col-lg-6 d-none d-lg-block">
-                            <img src="~/images/MyBookCollection_LoginPage_Cover.jpg" alt="Book Collection Image" style="height:650px; width:480px;" />
+                <div class="row">
+                    <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                            <img src="~/images/pexels-rickyrecap-1907785.jpg" alt="Book Collection Image" style="height:auto; width:480px;" />
                         </div>
                         <div class="col-lg-6">
                             <div class="p-5">
@@ -37,11 +35,9 @@
                                
                                     <hr />
 
-                                    <form asp-controller="Authentication"
+                                    <form class="user" asp-controller="Authentication"
                                           asp-action="LoginSubmitted"
                                           asp-antiforgery="true">
-
-                                        <div asp-validation-summary="None" class="text-danger"></div>
                                         
                                         <div class="form-group">
                                             <label for="emailAddress">Email address</label>
@@ -65,17 +61,29 @@
                                         @* <button type="submit" class="btn btn-outline-success mt-2 btn-login">
                                             Log in
                                         </button> *@
-                                        <hr>
-                                        <div class="text-center">
-                                        <a class="small" href="@Url.Action("ForgotPassword","Authentication")">Forgot Password?</a>
-                                        </div>
-                                        <div class="text-center">
-                                            <label class="small">Are you a new user?</label>
-                                        <a class="small" href="@Url.Action("Register","Authentication")"> Create an Account!</a>
-                                        </div>
 
-                                    </form>
-                                
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <a href="index.html" class="btn btn-google btn-user btn-block">
+                                            <i class="fab fa-google fa-fw"></i>Google
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                                            <i class="fab fa-facebook-f fa-fw"></i>Facebook
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" href="@Url.Action("ForgotPassword","Authentication")">Forgot Password?</a>
+                            </div>
+                            <div class="text-center">
+                                <label class="small">Are you a new user?</label>
+                                <a class="small" href="@Url.Action("Register","Authentication")"> Create an Account!</a>
+                            </div>
 
                             </div>
                         </div>
@@ -87,7 +95,6 @@
 
     </div>
 
-</div>
 
 
 <script>
