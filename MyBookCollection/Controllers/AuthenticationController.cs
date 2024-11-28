@@ -141,6 +141,7 @@ namespace MyBookCollection.Controllers
                         FullName = registerVM.FirstName + " " + registerVM.LastName,
                         Email = registerVM.EmailAddress,
                         UserName = registerVM.EmailAddress,
+                        ImageLink = "~/images/NoImage.png",
                         LockoutEnabled = true
                     };
 

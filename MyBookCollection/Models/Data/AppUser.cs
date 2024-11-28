@@ -15,6 +15,8 @@ namespace MyBookCollection.Models.Data
         }
 
         public string FullName { get; set; }
+        public string? ImageLink { get; set; }
+
 
         public virtual ICollection<Author> Authors { get; set; }
 
