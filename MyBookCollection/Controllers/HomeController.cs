@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyBookCollection.Models;
 using System.Diagnostics;
@@ -12,12 +13,12 @@ namespace MyBookCollection.Controllers
         {
             _logger = logger;
         }
-
+        [Authorize]
         public IActionResult Index()
         {
             return View();
         }
-
+        
         public IActionResult Privacy()
         {
             return View();

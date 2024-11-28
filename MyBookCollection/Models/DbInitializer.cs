@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MyBookCollection.Helpers.Roles;
 using MyBookCollection.Models.Data;
 
 namespace MyBookCollection.Models
@@ -13,7 +14,7 @@ namespace MyBookCollection.Models
                 var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 
                 //Simple user related data
-                var userRole = "Simple-User";
+                var userRole = Role.User;
                 var userEmail = "user@gmail.com";
 
                 //Create role if doesn't exist:
@@ -43,7 +44,7 @@ namespace MyBookCollection.Models
                 }
 
                 //Admin data
-                var roleAdmin = "Admin";
+                var roleAdmin = Role.Admin;
                 var adminUserEmail = "sssk08844@gmail.com";
 
                 //Create role if doesn't exist:

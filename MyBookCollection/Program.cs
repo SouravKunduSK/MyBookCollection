@@ -31,11 +31,26 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+    options.ExpireTimeSpan = TimeSpan.FromDays(15);
     options.LoginPath = "/Authentication/Login";
     options.LogoutPath = "/Authentication/Logout";
     options.SlidingExpiration = true;
 });
+
+//3. Update default password settings
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+
+    //Locked out settings
+    options.Lockout.MaxFailedAccessAttempts = 3;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+}); 
+
 
 
 
