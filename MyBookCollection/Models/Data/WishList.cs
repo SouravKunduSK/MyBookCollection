@@ -8,5 +8,7 @@
         public string AuthorName { get; set; }
         public string? Photo { get; set; }
         public decimal? Price { get; set; }
+
+        public AppUser? User { get; set; }
     }
 }

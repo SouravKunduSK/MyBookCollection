@@ -11,6 +11,8 @@
         public int BookStatusId { get; set; }
 
         // Navigation Properties
+
+        public AppUser? User { get; set; }
         public virtual Book Book { get; set; }
         public virtual BookStatus BookStatus { get; set; }
     }
