@@ -1,0 +1,48 @@
+﻿@using MyBookCollection.Models.Data
+@model AppUser
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">User</a></li>
+            <li class="breadcrumb-item active">User Details</li>
+        </ol>
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fas fa-user"></i> User Details
+            </div>
+            <div class="card-body">
+                @Html.HiddenFor(m => m.Id)
+           @*      @if (Model.Photo != null)
+                {
+                    <div class="col-md-6">
+                        <h3><strong>User Profile:</strong></h3><hr />
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <h6>User's Image</h6>
+                                <img src="@Url.Content(Model.Photo)" style="height:200px; width:150px;" alt="User Image" />
+                            </div>
+                        </div>
+                    </div>
+                } *@
+
+                <div class="col-md-6">
+                    <h6>First Name: @Model.FullName?.Split(' ').FirstOrDefault()</h6>
+                    <h6>Last Name: @Model.FullName?.Split(' ').LastOrDefault()</h6>
+                    <h6>User Name: @Model.UserName</h6>
+                    <h6>Email: @Model.Email</h6>
+                    @* <h6>Registration Date: @Model.RegDate?.ToString("dd-MM-yyyy")</h6> *@
+
+                    <a onclick="window.history.back();" class="btn btn-outline-warning">Back</a>
+                    <a href="@Url.Action("Edit", "Account", new { id = Model.Id })" class="btn btn-outline-info">Edit Picture</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>Please log in to view your profile details.</p>
+}
