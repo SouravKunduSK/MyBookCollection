@@ -2,6 +2,7 @@
 using FluentAssertions.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MyBookCollection.Helpers.Validators;
 using MyBookCollection.Models;
 using MyBookCollection.Models.Data;
 
@@ -43,12 +44,18 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 6;
+
+    //Login Settings Email verification check
+    options.SignIn.RequireConfirmedEmail = true;
 
     //Locked out settings
     options.Lockout.MaxFailedAccessAttempts = 3;
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+
+    //Unique email configure
+    options.User.RequireUniqueEmail = true;
 }); 
 
 
