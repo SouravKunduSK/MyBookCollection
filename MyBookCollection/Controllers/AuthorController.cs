@@ -28,11 +28,6 @@ namespace MyBookCollection.Controllers
                 return View();
             }
         }
-
-       /* public async Task<IActionResult> Create()
-        {
-            return View();
-        }*/
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateNewAuthor(Author author)
@@ -56,15 +51,6 @@ namespace MyBookCollection.Controllers
             }
             return RedirectToAction("AuthorList");
         }
-
-
-       /* public async Task<IActionResult> Edit(int id)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var author = await _authorService.GetAuthorByIdAsync(id, userId);
-            if (author == null) return NotFound();
-            return View(author);
-        }*/
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -90,19 +76,26 @@ namespace MyBookCollection.Controllers
             return RedirectToAction("AuthorList");
         }
 
-        public async Task<IActionResult> Delete(int id)
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var author = await _authorService.GetAuthorByIdAsync(id);
-            if (author == null) return NotFound();
-            return View(author);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _authorService.DeleteAuthorAsync(id);
-            return RedirectToAction(nameof(Index));
+            if (author == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                await _authorService.DeleteAuthorAsync(id);
+                return RedirectToAction(nameof(AuthorList));
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Something went Wrong! Try again.";
+                return RedirectToAction("AuthorList");
+            } 
         }
 
         public async Task<IActionResult> Details(int id)
@@ -112,43 +105,5 @@ namespace MyBookCollection.Controllers
             if (author == null) return NotFound();
             return View(author);
         }
-
-        public async Task<IActionResult> AddOrEditPartial(int? id)
-        {
-            if (id == null)
-            {
-                // Add new author (empty form)
-                return PartialView("_AddOrEdit", new AuthorVM());
-            }
-            else
-            {
-                // Edit existing author
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var author = await _authorService.GetAuthorByIdAsync(id.Value);
-                if (author == null)
-                {
-                    return NotFound();
-                }
-
-                var authorVm = new AuthorVM
-                {
-                    Id = author.Id,
-                    Name = author.Name
-                };
-                return PartialView("_AddOrEdit", authorVm);
-            }
-        }
-        public async Task<IActionResult> DeletePartial(int id)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var author = await _authorService.GetAuthorByIdAsync(id);
-            if (author == null)
-            {
-                return NotFound();
-            }
-            return PartialView("_Delete", author);
-        }
-
-
     }
 }

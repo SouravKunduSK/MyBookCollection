@@ -55,7 +55,10 @@
                                    data-name="@item.Name">
                                     Edit
                                 </a>
-                                <a href="@Url.Action("Delete", "Author", new { id = item.Id})" class="btn btn-outline-danger">Delete</a>
+                                <a href="#" class="btn btn-outline-danger delete-author-btn"
+                                    data-id="@item.Id" data-name="@item.Name"
+                                   data-toggle="modal" data-target="#deleteAuthorModal">
+                                   Delete</a>
                             </td>
 
 
@@ -69,7 +72,7 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="addAuthorModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title fs-5 text-success" id="staticBackdropLabel">Add New Author</h5>
@@ -96,11 +99,30 @@
         </div>
     </div>
 </div>
-<!-- Correct order of script loading -->
-
-
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteAuthorModal" tabindex="-1" aria-labelledby="deleteAuthorModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger" id="deleteAuthorModalLabel">Confirm Delete</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span class="text-danger" aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong class="text-danger" id="deletedAuthorName"></strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <form id="deleteAuthorForm" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
 
 <script>
        $(document).on('click', '.edit-author', function (event) {
@@ -139,4 +161,18 @@
         // Reset modal title
         $('#staticBackdropLabel').text('Add New Author');
     });
+
+    $(document).on('click', '.delete-author-btn', function () {
+        // Get Author Details
+        var authorId = $(this).data('id');
+        var authorName = $(this).data('name');
+
+        // Populate Modal
+        $('#deletedAuthorName').text(authorName);
+        console.log('Populated Modal with Author Name:', $('#deletedAuthorName').text());
+        // Set Form Action
+        var deleteUrl = '@Url.Action("DeleteConfirmed", "Author")/' + authorId;
+        $('#deleteAuthorForm').attr('action', deleteUrl);
+    });
+
 </script>

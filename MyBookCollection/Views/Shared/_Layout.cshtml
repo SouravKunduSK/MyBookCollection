@@ -4,7 +4,7 @@
 @inject IUserService UserService
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,104 +21,104 @@
     <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
     <!-- Data tables-->
     <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    
-    </head>
-    <body id="page-top">
 
-        @if (User.Identity.IsAuthenticated)
-        {
-            <!-- Page Wrapper -->
-            <div id="wrapper">
+</head>
+<body id="page-top">
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <!-- Page Wrapper -->
+        <div id="wrapper">
 
 
-                <!-- Sidebar -->
-                <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+            <!-- Sidebar -->
+            <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
-                    <!-- Sidebar - Brand -->
-                    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="@( Url.Action("Index", "Home"))">
-                        <div class="sidebar-brand-icon rotate-n-15">
-                            <img class="offset-3" style="height:40px; width:40px"
-                                 src="~/images/2-2-book-png-3.png">
-                        </div>
-                        <div class="sidebar-brand-text mx-3">My Book Collection</div>
-                    </a>
-
-                    <!-- Divider -->
-                    <hr class="sidebar-divider my-0">
-
-                    <!-- Nav Item - Dashboard -->
-                    <li id="home" class="nav-item">
-                        <a class="nav-link" href="@(Url.Action("Index", "Home"))">
-                            <i class="fas fa-fw fa-tachometer-alt"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-
-                    <!-- Divider -->
-                    <hr class="sidebar-divider">
-
-                    <!-- Heading -->
-                    <div class="sidebar-heading">
-                        Book Managements
+                <!-- Sidebar - Brand -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="@( Url.Action("Index", "Home"))">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <img class="offset-3" style="height:40px; width:40px"
+                             src="~/images/2-2-book-png-3.png">
                     </div>
-                    <!-- Nav Item - All Books -->
-                    <li id="allbook" class="nav-item">
+                    <div class="sidebar-brand-text mx-3">My Book Collection</div>
+                </a>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider my-0">
+
+                <!-- Nav Item - Dashboard -->
+                <li id="home" class="nav-item">
+                    <a class="nav-link" href="@(Url.Action("Index", "Home"))">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Book Managements
+                </div>
+                <!-- Nav Item - All Books -->
+                <li id="allbook" class="nav-item">
                     <a class="nav-link" asp-area=""
                        asp-controller="Authentication"
                        asp-action="Users">
-                            <i class="fas fa-fw fa-book-open"></i>
-                            <span>All Books</span>
-                        </a>
-                    </li>
+                        <i class="fas fa-fw fa-book-open"></i>
+                        <span>All Books</span>
+                    </a>
+                </li>
 
-                    <!-- Nav Item - Running Books -->
-                    <li id="runbook" class="nav-item">
+                <!-- Nav Item - Running Books -->
+                <li id="runbook" class="nav-item">
                     <a class="nav-link" asp-area=""
                        asp-controller="Authentication"
                        asp-action="Users">
-                            <i class="fas fa-fw fa-book-reader"></i>
-                            <span>Running Books</span>
-                        </a>
-                    </li>
-                    <!-- Nav Item - Completed Books -->
-                    <li id="combook" class="nav-item">
-                        <a class="nav-link" asp-area=""
-                               asp-controller="Authentication"
-                               asp-action="Users">
-                            <i class="fas fa-fw fa-check-square"></i>
-                            <span>Completed Books</span>
-                        </a>
-                    </li>
-
-                    <!-- Nav Item - Unread Books -->
-                    <li id="unbook" class="nav-item">
+                        <i class="fas fa-fw fa-book-reader"></i>
+                        <span>Running Books</span>
+                    </a>
+                </li>
+                <!-- Nav Item - Completed Books -->
+                <li id="combook" class="nav-item">
                     <a class="nav-link" asp-area=""
                        asp-controller="Authentication"
                        asp-action="Users">
-                            <i class="fas fa-fw fa-book"></i>
-                            <span>Unread Books</span>
-                        </a>
-                    </li>
+                        <i class="fas fa-fw fa-check-square"></i>
+                        <span>Completed Books</span>
+                    </a>
+                </li>
 
-                    <!-- Nav Item - Lended Books -->
-                    <li id="lendbook" class="nav-item">
-                        <a class="nav-link" asp-area=""
-                               asp-controller="Authentication"
-                               asp-action="Users">
-                            <i class="fas fa-fw fa-book-dead"></i>
-                            <span>Lended Books</span>
-                        </a>
-                    </li>
-
-                    <!-- Nav Item - Wishlisted Books -->
-                    <li id="wishbook" class="nav-item">
+                <!-- Nav Item - Unread Books -->
+                <li id="unbook" class="nav-item">
                     <a class="nav-link" asp-area=""
                        asp-controller="Authentication"
                        asp-action="Users">
-                            <i class="fas fa-fw fa-book-medical"></i>
-                            <span>Wishlisted Books</span>
-                        </a>
-                    </li>
+                        <i class="fas fa-fw fa-book"></i>
+                        <span>Unread Books</span>
+                    </a>
+                </li>
+
+                <!-- Nav Item - Lended Books -->
+                <li id="lendbook" class="nav-item">
+                    <a class="nav-link" asp-area=""
+                       asp-controller="Authentication"
+                       asp-action="Users">
+                        <i class="fas fa-fw fa-book-dead"></i>
+                        <span>Lended Books</span>
+                    </a>
+                </li>
+
+                <!-- Nav Item - Wishlisted Books -->
+                <li id="wishbook" class="nav-item">
+                    <a class="nav-link" asp-area=""
+                       asp-controller="Authentication"
+                       asp-action="Users">
+                        <i class="fas fa-fw fa-book-medical"></i>
+                        <span>Wishlisted Books</span>
+                    </a>
+                </li>
 
 
                 @{
@@ -142,13 +142,13 @@
                         </li>
                     }
                 }
-                    <!-- Divider -->
-                    <hr class="sidebar-divider">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-                    <!-- Heading -->
-                    <div class="sidebar-heading">
-                        Extras
-                    </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Extras
+                </div>
 
                 <!-- Nav Item - Pages Collapse Menu -->
                 @{
@@ -165,7 +165,7 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Advanced Sections:</h6>
 
-                                <a id="aut" class="collapse-item" href="@(isActive ? Url.Action("AuthorList", "Author") : Url.Action("AuthorList", "Author"))">
+                            <a id="aut" class="collapse-item" href="@(isActive ? Url.Action("AuthorList", "Author") : Url.Action("AuthorList", "Author"))">
                                 <i class="fas fa-pen-nib"></i> Authors
                             </a>
 
@@ -180,85 +180,85 @@
                     </div>
                 </li>
 
-                    <!-- Divider -->
-                    <hr class="sidebar-divider d-none d-md-block">
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
 
-                    <!-- Sidebar Toggler (Sidebar) -->
-                    <div class="text-center d-none d-md-inline">
-                        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-                    </div>
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
 
-                </ul>
-                <!-- End of Sidebar -->
-                <!-- Content Wrapper -->
-                <div id="content-wrapper" class="d-flex flex-column">
+            </ul>
+            <!-- End of Sidebar -->
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
 
-                    <!-- Main Content -->
-                    <div id="content">
+                <!-- Main Content -->
+                <div id="content">
 
-                        <!-- Topbar -->
-                        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <!-- Topbar -->
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                            <!-- Sidebar Toggle (Topbar) -->
-                            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                                <i class="fa fa-bars"></i>
-                            </button>
-
-
-
-                            <!-- Topbar Navbar -->
-                            <ul class="navbar-nav ml-auto">
-
-                                <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                                <li class="nav-item dropdown no-arrow d-sm-none">
-                                    <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-search fa-fw"></i>
-                                    </a>
+                        <!-- Sidebar Toggle (Topbar) -->
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
 
 
-                                </li>
 
-                                @* <a href="#" id="print">GENERATE PDF!</a> *@
+                        <!-- Topbar Navbar -->
+                        <ul class="navbar-nav ml-auto">
 
-                                <div class="topbar-divider d-none d-sm-block"></div>
+                            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                            <li class="nav-item dropdown no-arrow d-sm-none">
+                                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-search fa-fw"></i>
+                                </a>
 
-                                <!-- Nav Item - User Information -->
-                                <li class="nav-item dropdown no-arrow">
-                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                            @{
+
+                            </li>
+
+                            @* <a href="#" id="print">GENERATE PDF!</a> *@
+
+                            <div class="topbar-divider d-none d-sm-block"></div>
+
+                            <!-- Nav Item - User Information -->
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                        @{
                                             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                                             var userName = await UserService.GetUsernameAsync(userId);
-                                            }
-                                            @userName
-                                        </span>
-
-
-                                        @{
-                                            var imageLink = await UserService.GetUserImageLinkAsync(userId);
-                                            <img class="img-profile rounded-circle"
-                                                 src="@Url.Content(imageLink)">
-
                                         }
+                                        @userName
+                                    </span>
 
-                                    </a>
-                                    <!-- Dropdown - User Information -->
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                         aria-labelledby="userDropdown">
-                                        @if (true)
-                                        {
-                                            <a class="dropdown-item" href="@Url.Action("UserProfile","Account")">
-                                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                                My Profile
-                                            </a>
-                                        }
 
-                                        <a class="dropdown-item" href="@Url.Action("ChangePassword","Account")">
-                                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Change Password
+                                    @{
+                                        var imageLink = await UserService.GetUserImageLinkAsync(userId);
+                                        <img class="img-profile rounded-circle"
+                                             src="@Url.Content(imageLink)">
+
+                                    }
+
+                                </a>
+                                <!-- Dropdown - User Information -->
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                     aria-labelledby="userDropdown">
+                                    @if (true)
+                                    {
+                                        <a class="dropdown-item" href="@Url.Action("UserProfile","Account")">
+                                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            My Profile
                                         </a>
+                                    }
+
+                                    <a class="dropdown-item" href="@Url.Action("ChangePassword","Account")">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Change Password
+                                    </a>
                                     <!-- Logout Button -->
                                     <!-- Button trigger modal -->
                                     <div class="dropdown-divider"></div>
@@ -266,13 +266,13 @@
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Logout
                                     </a>
-                                    </div>
-                                </li>
+                                </div>
+                            </li>
 
-                            </ul>
+                        </ul>
 
-                        </nav>
-                        <!-- End of Topbar -->
+                    </nav>
+                    <!-- End of Topbar -->
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
                         @RenderBody()
@@ -281,31 +281,31 @@
 
 
 
-                    </div>
-                    <!-- End of Main Content -->
-                    <!-- Footer -->
-                    <footer class="sticky-footer bg-white">
-                        <div class="container my-auto">
-                            <div class="copyright text-center my-auto">
-                                <span>
-                                    <i class="fa fa-heart danger" aria-hidden="true"></i>
-                                    All rights reserved  by Sourav Kundu <i class="fa fa-heart danger" aria-hidden="true"></i><br />
-                                    Copyright &copy; 2022 -
-                                    <script>document.write(new Date().getFullYear());</script>
-                                    ; My Book Collection <i class="fa fa-book danger" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </footer>
-                    <!-- End of Footer -->
-
-
                 </div>
-                <!-- End of Content Wrapper -->
+                <!-- End of Main Content -->
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>
+                                <i class="fa fa-heart danger" aria-hidden="true"></i>
+                                All rights reserved  by Sourav Kundu <i class="fa fa-heart danger" aria-hidden="true"></i><br />
+                                Copyright &copy; 2022 -
+                                <script>document.write(new Date().getFullYear());</script>
+                                ; My Book Collection <i class="fa fa-book danger" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End of Footer -->
+
 
             </div>
-            <!-- End of Page Wrapper -->
-        }
+            <!-- End of Content Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+    }
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -318,7 +318,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fs-5 text-danger"  id="staticBackdropLabel">Do you really want to Log out?</h5>
+                    <h5 class="modal-title fs-5 text-danger" id="staticBackdropLabel">Do you really want to Log out?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span class="text-danger" aria-hidden="true">X</span>
                     </button>
@@ -343,12 +343,13 @@
     </div>
 
     -->
-
-
+    <!-- Correct order of script loading -->
     <!-- Bootstrap core JavaScript-->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="~/vendor/jquery/jquery.min.js"></script>
     <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    
 
     <!-- Core plugin JavaScript-->
     <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -369,7 +370,7 @@
 
     <!-- Page level datatables custom scripts -->
     <script src="~/js/demo/datatables-demo.js"></script>
-        <!--<script>
+    <!--<script>
             $(document).ready(function () {
                 if ('@ViewBag.data' != null) {
                     $('#' + '@ViewBag.data').addClass('active');
@@ -384,7 +385,7 @@
                     changeYear: true,
                     yearRange: "-10:+10"
 
-                    
+
                 });
             });
 
@@ -404,9 +405,6 @@
 
             }, false);
     </script>-->
-
-       
-    
-        @await RenderSectionAsync("Scripts", required:false)
-    </body>
-</html>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html> 
