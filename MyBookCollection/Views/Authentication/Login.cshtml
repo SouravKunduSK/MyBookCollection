@@ -1,0 +1,113 @@
+﻿@using MyBookCollection.Models.ViewModels
+@model LoginVM;
+
+@{
+    ViewData["Title"] = "Login to your account.";
+    Layout = "~/Views/Shared/_AuthenticationLayout.cshtml";
+}
+
+
+<div class="container">
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block">
+                            <img src="~/images/element5-digital-OyCl7Y4y0Bk-unsplash.jpg" alt="" style="height:500px; width:480px;" />
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                </div>
+
+                                @if (ViewBag.Status != null && Convert.ToBoolean(ViewBag.Status))
+                                {
+                                    if (ViewBag.Message != null)
+                                    {
+                                        <div class="alert alert-success">
+                                            <strong>Success!</strong>@ViewBag.Message
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <hr />
+
+                                    <form asp-controller="Authentication"
+                                          asp-action="LoginSubmitted"
+                                          asp-antiforgery="true">
+
+                                        <div asp-validation-summary="None" class="text-danger"></div>
+                                        
+                                        <div class="form-group">
+                                            @* <label for="emailAddress">Email address</label> *@
+                                            <input type="email" asp-for="EmailAddress" class="form-control" id="emailAddress" placeholder="Enter Email Address" />
+                                            @* <small id="emailAddressSm" class="form-text text-muted">We'll never share your email with anyone else.</small> *@
+                                            <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            @* <label for="password">Password</label> *@
+                                            <input type="password" asp-for="Password" class="form-control" id="password" placeholder="Enter password" />
+                                            <i class="far fa-eye fa-eye-slash" style=" cursor: pointer; float:right;" id="togglePassword"></i>
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="checkbox" asp-for="RememberMe" />
+                                            <label for="rememberMe" style="color:royalblue">Remember Me</label>
+                                            <span asp-validation-for="RememberMe" class="text-danger"></span>
+                                        </div>
+                                        <input type="submit" value="Login" class="btn btn-outline-success btn-user btn-block" />
+
+                                        @* <button type="submit" class="btn btn-outline-success mt-2 btn-login">
+                                            Log in
+                                        </button> *@
+                                        <hr>
+                                        <div class="text-center">
+                                            <a class="small" href="@Url.Action("ForgotPassword","Account")">Forgot Password?</a>
+                                        </div>
+                                        <div class="text-center">
+                                            <label class="small">Are you a new user?</label>
+                                            <a class="small" href="@Url.Action("Registration","Account")"> Create an Account!</a>
+                                        </div>
+
+                                    </form>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+
+    togglePassword.addEventListener('click', function (e) {
+        // toggle the type attribute
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        // toggle the eye slash icon
+        this.classList.toggle('fa-eye-slash');
+    });
+</script>
+<style>
+    i#togglePassword {
+        margin-top: -27px;
+        margin-right: 13px;
+    }
+</style>

@@ -1,4 +1,5 @@
 
+using FluentAssertions.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyBookCollection.Models;
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 //Configure Database
 
@@ -29,8 +31,9 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+    options.ExpireTimeSpan = TimeSpan.FromDays(7);
     options.LoginPath = "/Authentication/Login";
+    options.LogoutPath = "/Authentication/Logout";
     options.SlidingExpiration = true;
 });
 

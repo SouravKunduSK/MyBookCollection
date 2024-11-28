@@ -4,6 +4,6 @@ namespace MyBookCollection.Services
 {
     public interface IUserService
     {
-        List<AppUser> GetUsers();
+        Task<List<AppUser>> GetUsersAsync();
     }
 }
