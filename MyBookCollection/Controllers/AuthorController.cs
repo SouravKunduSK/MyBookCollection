@@ -19,12 +19,13 @@ namespace MyBookCollection.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             try
             {
+                
                 var authors = await _authorService.GetAllAuthorsAsync(userId);
                 return View(authors);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ViewBag.Error = "Something went wrong! Try again.";
+                TempData["ErrorMessage"] = "Something went wrong! Try again.";
                 return View();
             }
         }
@@ -34,7 +35,7 @@ namespace MyBookCollection.Controllers
         {
             if (author == null || !ModelState.IsValid)
             {
-                ViewBag.ErrorMessage = "Something went Wrong! Try again.";
+                TempData["ErrorMessage"] = "Something went Wrong! Try again.";
                 return RedirectToAction("AuthorList");
             }
             if (ModelState.IsValid)
@@ -44,10 +45,10 @@ namespace MyBookCollection.Controllers
                 if (!existingAuthor.Any(x=>x.Name == author.Name)) 
                 {
                     await _authorService.AddAuthorAsync(author, userId);
-                    ViewBag.Message = "Author name is added successfully!";
+                    TempData["SuccessMessage"] = "Author name is added successfully!";
                     return RedirectToAction("AuthorList");
                 }
-                ViewBag.ErrorMessage = "Name is already added! Try another.";
+                TempData["ErrorMessage"] = "Name is already added! Try another.";
             }
             return RedirectToAction("AuthorList");
         }
@@ -66,13 +67,13 @@ namespace MyBookCollection.Controllers
                 {
                     existingAuthor.Name = author.Name;
                     await _authorService.UpdateAuthorAsync(existingAuthor);
-                    ViewBag.Message = "Author name is updated successfully!";
+                    TempData["SuccessMessage"] = "Author name is updated successfully!";
                     return RedirectToAction("AuthorList");
                 }
-                ViewBag.ErrorMessage = "Name is already added! Try another.";
+                TempData["ErrorMessage"] = "Name is already added! Try another.";
                 return RedirectToAction("AuthorList");
             }
-            ViewBag.ErrorMessage = "Something went Wrong! Try again.";
+            TempData["ErrorMessage"] = "Something went Wrong! Try again.";
             return RedirectToAction("AuthorList");
         }
 
@@ -89,21 +90,14 @@ namespace MyBookCollection.Controllers
             try
             {
                 await _authorService.DeleteAuthorAsync(id);
+                TempData["SuccessMessage"] = "Author name is deleted successfully!";
                 return RedirectToAction(nameof(AuthorList));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ViewBag.ErrorMessage = "Something went Wrong! Try again.";
+                TempData["ErrorMessage"] = "Something went Wrong! Try again.";
                 return RedirectToAction("AuthorList");
             } 
-        }
-
-        public async Task<IActionResult> Details(int id)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var author = await _authorService.GetAuthorByIdAsync(id);
-            if (author == null) return NotFound();
-            return View(author);
         }
     }
 }
